@@ -1,3 +1,4 @@
+import { makeStyles } from "@material-ui/core"
 import TextField from "@material-ui/core/TextField"
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import {
@@ -12,6 +13,19 @@ import { Controller, useFormContext } from "react-hook-form"
 import InputMask from "react-input-mask"
 import { PlacesAutocomplete } from "react-places-autocomplete"
 
+const useStyles = makeStyles((theme) => ({
+  inputRoot: {
+    height: "40px",
+    background: "#282836",
+  },
+  noBorder: {
+    border: "none",
+  },
+  // input: {
+  //   height: "40px",
+  // },
+}))
+
 export const CustomFormInput = ({ defaultValue, name, required, ...props }) => {
   const { control } = useFormContext()
 
@@ -22,6 +36,34 @@ export const CustomFormInput = ({ defaultValue, name, required, ...props }) => {
       name={name}
       required={required}
       defaultValue={defaultValue}
+      {...props}
+    />
+  )
+}
+
+export const CustomFormInputForPayment = ({
+  defaultValue,
+  name,
+  required,
+  ...props
+}) => {
+  const { control } = useFormContext()
+  const classes = useStyles()
+
+  return (
+    <Controller
+      as={TextField}
+      control={control}
+      name={name}
+      required={required}
+      defaultValue={defaultValue}
+      InputProps={{
+        classes: {
+          root: classes.inputRoot,
+          notchedOutline: classes.noBorder,
+        },
+      }}
+      style={{ height: "40px" }}
       {...props}
     />
   )
@@ -50,6 +92,7 @@ export const CustomMaskInput = ({
   ...props
 }) => {
   const { control } = useFormContext()
+  const classes = useStyles()
 
   return (
     <Controller

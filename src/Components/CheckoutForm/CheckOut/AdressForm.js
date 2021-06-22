@@ -74,6 +74,12 @@ const useStyles = makeStyles((theme) => ({
     objectFit: "cover",
     // padding: "5px",
     paddingLeft: "10px",
+    userDrag: "none",
+    userSelect: "none",
+    mozUserSelect: "none",
+    webkitUserDrag: "none",
+    webkitUserSelect: "none",
+    msUserSelect: "none",
   },
   carImageStylesForBiggerTypeOfImage: {
     width: "84%",
@@ -81,6 +87,12 @@ const useStyles = makeStyles((theme) => ({
     objectFit: "contain",
     padding: "5px",
     paddingTop: "12px",
+    userDrag: "none",
+    userSelect: "none",
+    mozUserSelect: "none",
+    webkitUserDrag: "none",
+    webkitUserSelect: "none",
+    msUserSelect: "none",
   },
   carItemContainer: {
     paddingTop: theme.spacing(2),
@@ -89,7 +101,7 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     marginLeft: "13px",
     fontSize: "16px",
-    marginTop: "-10px",
+    marginTop: "-13px",
   },
   submitButton: {
     paddingTop: "10px",
@@ -107,6 +119,17 @@ const useStyles = makeStyles((theme) => ({
   listRoot: {
     "&:hover": {
       backgroundColor: "#313159",
+    },
+  },
+  carouselRoot: {
+    background: "#191929",
+
+    minWidth: "30px",
+    height: "75px",
+    marginTop: "8px",
+    cursor: "pointer",
+    "&:hover": {
+      backgroundColor: "#3c365e",
     },
   },
 }))
@@ -156,33 +179,6 @@ const schema = yup.object().shape({
   rideCheckPoint: yup.string().required("Check point is required"),
   // carsValidation: yup.number().required(),
 })
-
-const myArrow = ({ type, onClick, isEdge }) => {
-  const pointer =
-    type === consts.PREV ? (
-      <LeftArrowForAdressForm />
-    ) : (
-      <RightArrowForAdressForm />
-    )
-  return (
-    <Button
-      onClick={onClick}
-      disabled={isEdge}
-      style={{
-        background: "#191929",
-        "&:hover": {
-          backgroundColor: "white",
-          color: "white",
-        },
-        minWidth: "30px",
-        height: "75px",
-        marginTop: "8px",
-      }}
-    >
-      {pointer}
-    </Button>
-  )
-}
 
 {
   /*компонента перед экспортом обернута в react.memo*/
@@ -276,6 +272,24 @@ const AdressFormwithoutReactMemo = ({
       setDisableHourly(false)
     }
   }, [firstAirline])
+
+  const myArrow = ({ type, onClick, isEdge }) => {
+    const pointer =
+      type === consts.PREV ? (
+        <LeftArrowForAdressForm />
+      ) : (
+        <RightArrowForAdressForm />
+      )
+    return (
+      <Button
+        onClick={onClick}
+        disabled={isEdge}
+        className={classes.carouselRoot}
+      >
+        {pointer}
+      </Button>
+    )
+  }
 
   return (
     <Grid item>
@@ -557,12 +571,10 @@ const AdressFormwithoutReactMemo = ({
                       //     textAlign: "right", // 4
                       //   },
                       // }}
-                      style={{ paddingLeft: "0px" }}
                       renderArrow={myArrow}
                       itemsToShow={3}
                       pagination={false}
                       transitionMs={300}
-                      preventDefaultTouchmoveEvent={true}
                     >
                       {carTypes.map((car, indexOfEachCar) => (
                         <>

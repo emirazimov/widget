@@ -1,133 +1,143 @@
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Card from '@material-ui/core/Card';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Slide from '@material-ui/core/Slide';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import { ThemeProvider } from '@material-ui/styles';
+import Accordion from "@material-ui/core/Accordion"
+import AccordionDetails from "@material-ui/core/AccordionDetails"
+import AccordionSummary from "@material-ui/core/AccordionSummary"
+import Card from "@material-ui/core/Card"
+import CssBaseline from "@material-ui/core/CssBaseline"
+import Slide from "@material-ui/core/Slide"
+import Button from "@material-ui/core/Button"
+import Dialog from "@material-ui/core/Dialog"
+import { ThemeProvider } from "@material-ui/styles"
 // import { isMobile } from 'react-device-detect';
-import React, { useEffect } from 'react';
-import Draggable from 'react-draggable';
-import { connect } from 'react-redux';
-import { BookinglaneIcon } from './assets/icons';
-import CheckOut from './Components/CheckoutForm/CheckOut/CheckOut';
-import CompanyProfile from './Components/CompanyProfile/CompanyProfile';
+import React, { useEffect } from "react"
+import Draggable from "react-draggable"
+import { connect } from "react-redux"
+import { BookinglaneIcon } from "./assets/icons"
+import CheckOut from "./Components/CheckoutForm/CheckOut/CheckOut"
+import CompanyProfile from "./Components/CompanyProfile/CompanyProfile"
 import {
   getCompanyProfile,
   initializing,
-} from './Redux/company-profile-reducer';
-import { getCompanyToken } from './Redux/company-token-reducer';
-import theme from './Theme';
-import { Preloader } from './Components/Helpers/Preloader';
-import { userScreenHeight, userScreenWidth, useStyles } from './AppStyles';
-import { AppBar, useMediaQuery } from '@material-ui/core';
+} from "./Redux/company-profile-reducer"
+import { getCompanyToken } from "./Redux/company-token-reducer"
+import theme from "./Theme"
+import { Preloader } from "./Components/Helpers/Preloader"
+import { userScreenHeight, userScreenWidth, useStyles } from "./AppStyles"
+import { AppBar, useMediaQuery } from "@material-ui/core"
+import { useRef } from "react"
 
-let xOrdinate = 0;
-let yOrdinate = 0;
+let xOrdinate = 0
+let yOrdinate = 0
+// const cardHeight = document.getElementById("mainContent").clientHeight
 
 const App = (props) => {
-  const classes = useStyles(props);
+  const classes = useStyles(props)
 
-  const [activeStep, setActiveStep] = React.useState(0);
-  let position = React.useRef({ x: 0, y: 0 });
-  const [expanded, setExpanded] = React.useState(false);
-  const [disabled, setDisabled] = React.useState(false);
-  const [disabledWidget, setDisabledWidget] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [activeStep, setActiveStep] = React.useState(0)
+  let position = React.useRef({ x: 0, y: 0 })
+  const [expanded, setExpanded] = React.useState(false)
+  const [disabled, setDisabled] = React.useState(false)
+  const [disabledWidget, setDisabledWidget] = React.useState(false)
+  const [open, setOpen] = React.useState(false)
+  const [heightOfCard, setHeightOfCard] = React.useState(0)
+  const refOfCard = useRef(null)
+  const [heightOfBookNow, setHeightOfBookNow] = React.useState(0)
+  const refOfBookNow = useRef(null)
 
   const handleClickOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleCloseDialog = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const handleClose = () => {
-    setExpanded(false);
-  };
+    setExpanded(false)
+  }
 
   const handleChange = (panel) => (event, isExpanded) => {
-    yOrdinate = position.current.y;
-    xOrdinate = position.current.x;
-    position.current.y = 0;
+    yOrdinate = position.current.y
+    xOrdinate = position.current.x
+    position.current.y = 0
     if (userScreenWidth - xOrdinate < 500) {
-      position.current.x = userScreenWidth - 520;
+      position.current.x = userScreenWidth - 520
     }
     if (xOrdinate < -20) {
-      position.current.x = 0;
+      position.current.x = 0
     }
-    setExpanded(isExpanded ? panel : false);
-  };
+    setExpanded(isExpanded ? panel : false)
+  }
 
   const enableAccordionButton = (e) => {
-    setDisabled(false);
+    setDisabled(false)
+    setHeightOfCard(refOfCard.current.clientHeight)
 
     {
       /*Этот обработчик чтобы сам раскрывшийся виджет не выходил за рамки экрана если перетаскивается за пределы то он возвращается */
     }
     if (expanded) {
-      yOrdinate = position.current.y;
-      xOrdinate = position.current.x;
+      yOrdinate = position.current.y
+      xOrdinate = position.current.x
       if (xOrdinate + 500 > userScreenWidth) {
-        position.current.x = userScreenWidth - 500;
+        position.current.x = userScreenWidth - 430
       }
       if (xOrdinate < -20) {
-        position.current.x = 0;
+        position.current.x = 0
       }
-      if (yOrdinate < -169) {
-        position.current.y = -170;
+      if (yOrdinate - heightOfCard < -userScreenHeight) {
+        position.current.y = -userScreenHeight + heightOfCard
       }
       if (yOrdinate > 0) {
-        position.current.y = 0;
+        position.current.y = 0
       }
     }
     {
       /*Тот же обратчик только для иконки Book Now! с пульсацией до раскрытой иконке*/
     }
-    yOrdinate = position.current.y;
-    xOrdinate = position.current.x;
+    yOrdinate = position.current.y
+    xOrdinate = position.current.x
     if (xOrdinate < 0) {
-      position.current.x = -60;
+      position.current.x = -60
     }
     if (xOrdinate + 300 > userScreenWidth) {
-      position.current.x = userScreenWidth - 300;
+      position.current.x = userScreenWidth - 300
     }
-    if (yOrdinate < -619) {
-      position.current.y = userScreenHeight - 1625;
+    if (yOrdinate - 180 < -userScreenHeight) {
+      position.current.y = -userScreenHeight + 220
     }
-    console.log(position.current.y);
-    console.log(userScreenHeight);
+
     if (yOrdinate > 0) {
-      position.current.y = 0;
+      position.current.y = 0
     }
-  };
-
+    // console.log(position.current.y)
+    // console.log(userScreenHeight)
+  }
+  React.useEffect(() => {
+    setHeightOfBookNow(refOfBookNow.current.clientHeight)
+  }, [heightOfBookNow])
   const handleDrag = (e, ui) => {
-    position.current.x = ui.x;
-    position.current.y = ui.y;
-    if (!expanded) setDisabled(true);
-  };
+    position.current.x = ui.x
+    position.current.y = ui.y
+    if (!expanded) setDisabled(true)
+  }
 
-  const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1)
+  const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1)
 
-  const jwtToken = localStorage.getItem('Authorization');
+  const jwtToken = localStorage.getItem("Authorization")
 
   useEffect(() => {
     if (jwtToken) {
-      return;
+      return
     }
-    props.getCompanyToken();
-  }, [jwtToken]);
+    props.getCompanyToken()
+  }, [jwtToken])
 
   const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
+    return <Slide direction="up" ref={ref} {...props} />
+  })
 
-  const isMobile = useMediaQuery('(max-width:650px)');
+  const isMobile = useMediaQuery("(max-width:650px)")
 
   return (
     <>
@@ -146,8 +156,8 @@ const App = (props) => {
                 TransitionProps={{
                   timeout: 0,
                 }}
-                expanded={expanded === 'panel1'}
-                onChange={handleChange('panel1')}
+                expanded={expanded === "panel1"}
+                onChange={handleChange("panel1")}
               >
                 <AccordionSummary
                   className={classes.accordion}
@@ -162,8 +172,8 @@ const App = (props) => {
                       style={{ bottom: userScreenHeight - yOrdinate }}
                       style={
                         activeStep === 1
-                          ? { overflowY: 'hidden' }
-                          : { overflowY: 'auto' }
+                          ? { overflowY: "hidden" }
+                          : { overflowY: "auto" }
                       }
                     >
                       <CompanyProfile
@@ -231,52 +241,56 @@ const App = (props) => {
                   TransitionProps={{
                     timeout: 0,
                   }}
-                  expanded={expanded === 'panel1'}
-                  onChange={handleChange('panel1')}
+                  expanded={expanded === "panel1"}
+                  onChange={handleChange("panel1")}
                 >
                   <AccordionSummary
                     className={classes.accordion}
                     expandIcon={<BookinglaneIcon />}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
+                    ref={refOfBookNow}
                   ></AccordionSummary>
                   <AccordionDetails>
                     {jwtToken && (
-                      <Card
-                        className={classes.content}
-                        style={{ bottom: userScreenHeight - yOrdinate }}
-                        style={
-                          activeStep === 1
-                            ? { overflowY: 'hidden' }
-                            : { overflowY: 'auto' }
-                        }
-                      >
-                        <AppBar position="sticky" color=" #101020">
-                          <div className="companyProfileClassForDrag">
-                            {/* этот класс c div-oм для реакт драга чтобы можно было перетаскивать по шапке виджета*/}
-                            <div className={classes.companyProfile}>
-                              {/* это для pointer cursora */}
-                              <CompanyProfile
-                                setExpanded={handleClose}
-                                initializing={props.initializing}
-                                expanded={expanded}
-                                setActiveStep={setActiveStep}
-                              />
+                      <div className="mainContent">
+                        <Card
+                          className={classes.content}
+                          style={{ bottom: userScreenHeight - yOrdinate }}
+                          style={
+                            activeStep === 1
+                              ? { overflowY: "hidden" }
+                              : { overflowY: "auto" }
+                          }
+                          ref={refOfCard}
+                        >
+                          <AppBar position="sticky" color=" #101020">
+                            <div className="companyProfileClassForDrag">
+                              {/* этот класс c div-oм для реакт драга чтобы можно было перетаскивать по шапке виджета*/}
+                              <div className={classes.companyProfile}>
+                                {/* это для pointer cursora */}
+                                <CompanyProfile
+                                  setExpanded={handleClose}
+                                  initializing={props.initializing}
+                                  expanded={expanded}
+                                  setActiveStep={setActiveStep}
+                                />
+                              </div>
                             </div>
-                          </div>
-                        </AppBar>
-                        {props.initializing ? (
-                          <CheckOut
-                            isFetching={props.isFetching}
-                            setExpanded={handleClose}
-                            activeStep={activeStep}
-                            setActiveStep={setActiveStep}
-                            nextStep={nextStep}
-                            backStep={backStep}
-                            className={classes.checkOut}
-                          />
-                        ) : null}
-                      </Card>
+                          </AppBar>
+                          {props.initializing ? (
+                            <CheckOut
+                              isFetching={props.isFetching}
+                              setExpanded={handleClose}
+                              activeStep={activeStep}
+                              setActiveStep={setActiveStep}
+                              nextStep={nextStep}
+                              backStep={backStep}
+                              className={classes.checkOut}
+                            />
+                          ) : null}
+                        </Card>
+                      </div>
                     )}
                     {!jwtToken && null}
                   </AccordionDetails>
@@ -287,17 +301,17 @@ const App = (props) => {
         </>
       )}
     </>
-  );
-};
+  )
+}
 
 const mapStateToProps = (state) => {
   return {
     isFetching: state.cars.isFetching,
     companyName: state.companyProfile.profile.companyName,
     initializing: state.companyProfile.initializing,
-  };
-};
+  }
+}
 
 export default connect(mapStateToProps, { getCompanyProfile, getCompanyToken })(
   App
-);
+)
