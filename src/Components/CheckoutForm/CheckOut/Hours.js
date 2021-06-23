@@ -27,7 +27,13 @@ const Hours = ({ hoursState, setHourly }) => {
   }, [hoursState])
 
   return (
-    <Grid container direction="row" justify="space-between" alignItems="center">
+    <Grid
+      container
+      direction="row"
+      justify="space-between"
+      alignItems="center"
+      style={{ marginTop: "-10px" }}
+    >
       <Grid item>
         <Typography
           style={{ color: "white", marginLeft: "12px", fontSize: "16px" }}
@@ -51,11 +57,14 @@ const Hours = ({ hoursState, setHourly }) => {
             <input
               ref={register}
               name="hours"
+              onChange={(e) => {
+                setValue(e.target.value)
+              }}
               value={value}
-              readOnly
               size="1"
               style={{
-                pointerEvents: "none",
+                // pointerEvents: "none",
+                marginRight: "3px",
                 backgroundColor: "transparent",
                 border: "none",
                 color: "#FFFFFF",

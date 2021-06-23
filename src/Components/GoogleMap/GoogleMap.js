@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     zIndex: 1000,
     justifyContent: "center",
+    width: "500px",
   },
   destinationInputFrom: {},
   inputRoot: {
@@ -46,9 +47,10 @@ const useStyles = makeStyles((theme) => ({
     "&::placeholder": {
       color: "white",
     },
+    fontSize: "14px",
   },
   noBorder: {
-    border: "none",
+    border: "1px solid #191929",
   },
   input: {
     // "&::-webkit-input-placeholder": {
@@ -70,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     "&::placeholder": {
       color: "white",
       opacity: "1",
-      fontSize: "16px",
+      fontSize: "14px",
     },
   },
 }))
@@ -83,6 +85,8 @@ const GoogleMap = React.memo(
       orderAddressDetails,
       ref,
       errors,
+      stateValueFrom,
+      stateValueTo,
       ...props
     }) => {
       const classes = useStyles()
@@ -189,7 +193,6 @@ const GoogleMap = React.memo(
                     onChange={(value) => handleChange(value, id)}
                     onSelect={(value) => handleSelect(value, id)}
                     key={`${destination.id}${id}`}
-                    style={{ fontSize: "16px" }}
                   >
                     {({
                       getInputProps,
@@ -207,10 +210,10 @@ const GoogleMap = React.memo(
                               marginTop: "-17px",
                             }}
                             variant="outlined"
+                            name="rideCheckPoint"
                             defaultValue={destinations[id].rideCheckPoint}
                             fullWidth
-                            name="rideCheckPoint"
-                            ref={ref}
+                            inputRef={ref}
                             InputProps={{
                               classes: {
                                 root: classes.inputRoot,
@@ -287,12 +290,14 @@ const GoogleMap = React.memo(
                                   cursor: "pointer",
                                   textTransform: "none",
                                   justifyContent: "center",
+
+                                  width: "380px",
                                 }
                               : {
                                   backgroundColor: "#160E31",
                                   cursor: "pointer",
                                   textTransform: "none",
-                                  width: "490px",
+                                  width: "380px",
                                   justifyContent: "center",
                                 }
                             return (
@@ -303,7 +308,14 @@ const GoogleMap = React.memo(
                                   style,
                                 })}
                               >
-                                <MenuItem>{suggestion.description}</MenuItem>
+                                <MenuItem
+                                  style={{
+                                    whiteSpace: "pre-line",
+                                    fontSize: "14px",
+                                  }}
+                                >
+                                  {suggestion.description}
+                                </MenuItem>
                               </div>
                             )
                           })}

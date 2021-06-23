@@ -38,7 +38,7 @@ const PassengerQuantity = ({ passengersqState }) => {
           <NumberOfPassengersIcon
             style={{ paddingLeft: "30px" }}
           ></NumberOfPassengersIcon>
-          <Typography style={{ color: "white", fontSize: "16px" }}>
+          <Typography style={{ color: "white", fontSize: "14px" }}>
             Number of passengers
           </Typography>
         </Grid>
@@ -53,7 +53,7 @@ const PassengerQuantity = ({ passengersqState }) => {
           <Grid item>
             <span
               onClick={onDecrease}
-              style={{ "&:hover": { color: "white" } }}
+              // style={{ "&:hover": { color: "white" } }}
             >
               <MinusIcon />
             </span>
@@ -62,11 +62,14 @@ const PassengerQuantity = ({ passengersqState }) => {
             <input
               ref={register}
               name="passengersQuantity"
+              onChange={(e) => {
+                setValue(e.target.value)
+              }}
               value={value}
-              readOnly
               size="1"
               style={{
-                pointerEvents: "none",
+                // pointerEvents: "none",
+                marginRight: "3px",
                 backgroundColor: "transparent",
                 border: "none",
                 color: "#FFFFFF",
@@ -74,7 +77,7 @@ const PassengerQuantity = ({ passengersqState }) => {
                 fontFamily: "Roboto",
                 textTransform: "none",
                 fontWeight: "400",
-                fontSize: "16px",
+                fontSize: "14px",
               }}
             />
           </Grid>

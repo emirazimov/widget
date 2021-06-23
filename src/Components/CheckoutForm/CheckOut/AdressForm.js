@@ -39,7 +39,13 @@ import { withStyles } from "@material-ui/styles"
 // import Carousel, { Dots, slidesToShowPlugin } from '@brainhubeu/react-carousel';
 import Carousel, { consts } from "react-elastic-carousel"
 // import Carousel from "react-material-ui-carousel";
+import Tooltip from "@material-ui/core/Tooltip"
+import { setFormData } from "./../../../Redux/form-reducer"
 import "@brainhubeu/react-carousel/lib/style.css"
+import { createMuiTheme } from "@material-ui/core"
+import { ThemeProvider } from "@material-ui/styles"
+import Blue from "@material-ui/core/colors/blue"
+import lime from "@material-ui/core/colors/lime"
 
 const useStyles = makeStyles((theme) => ({
   contentContainer: {
@@ -100,11 +106,11 @@ const useStyles = makeStyles((theme) => ({
   preferences: {
     color: "white",
     marginLeft: "13px",
-    fontSize: "16px",
+    fontSize: "14px",
     marginTop: "-13px",
   },
   submitButton: {
-    paddingTop: "10px",
+    paddingTop: "0px",
   },
   active: {
     // color: '#392BAA',
@@ -113,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
     "&::placeholder": {
       color: "white",
       opacity: "1",
-      fontSize: "16px",
+      fontSize: "14px",
     },
   },
   listRoot: {
@@ -131,6 +137,12 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: "#3c365e",
     },
+  },
+  noBorder: {
+    border: "1px solid #191929",
+  },
+  inputDateTime: {
+    height: "40px",
   },
 }))
 
@@ -175,11 +187,49 @@ const AntSwitch = withStyles((theme) => ({
   checked: {},
 }))(Switch)
 
+const materialTheme = createMuiTheme({
+  overrides: {
+    MuiPickersToolbar: {
+      toolbar: {
+        backgroundColor: Blue.A200,
+      },
+    },
+    MuiPickersCalendarHeader: {
+      switchHeader: {
+        // backgroundColor: lightBlue.A200,
+        // color: "white",
+      },
+    },
+    MuiPickersDay: {
+      day: {
+        color: Blue.A700,
+      },
+      daySelected: {
+        backgroundColor: Blue["400"],
+      },
+      dayDisabled: {
+        color: Blue["100"],
+      },
+      current: {
+        color: Blue["900"],
+      },
+    },
+    MuiPickersModal: {
+      dialogAction: {
+        color: Blue["400"],
+      },
+    },
+  },
+  // palette: {
+  //   primary: lime,
+  // },
+})
 const schema = yup.object().shape({
-  rideCheckPoint: yup.string().required("Check point is required"),
+  destinations: yup.object().shape({
+    rideCheckPoint: yup.object().required(),
+  }),
   // carsValidation: yup.number().required(),
 })
-
 {
   /*компонента перед экспортом обернута в react.memo*/
 }
@@ -226,7 +276,10 @@ const AdressFormwithoutReactMemo = ({
     setCarSelectionID(id)
   }
 
-  const { errors, register, handleSubmit, setValue, ...methods } = useForm()
+  const { errors, register, handleSubmit, setValue, ...methods } = useForm({
+    // mode: "onBlur",
+    // resolver: yupResolver(schema),
+  })
 
   const onSubmit = (data) => {
     getCompanyCars({
@@ -248,8 +301,13 @@ const AdressFormwithoutReactMemo = ({
         minute: "numeric",
       }
     ))
+    setFormData(data)
     console.log(data)
-    next()
+    if (destinations[0].rideCheckPoint && destinations[1].rideCheckPoint) {
+      next()
+    } else {
+      alert("dasfasdf")
+    }
 
     // console.log(data, destinations, `cars = ${typeof carSelectionID}`)
   }
@@ -300,10 +358,12 @@ const AdressFormwithoutReactMemo = ({
               setDestinations={setDestinations}
               destinations={destinations}
               orderAddressDetails={formData.orderAddressDetails}
-              errors={errors["rideCheckPoint"]?.message}
-              ref={register}
+              ref={register({ required: "Name is required" })}
               setValue={setValue}
+              stateValueFrom={destinations[0].rideCheckPoint}
+              stateValueTo={destinations[1].rideCheckPoint}
             />
+            {console.log(errors)}
           </Grid>
           <Grid container justify="center">
             <Grid
@@ -338,7 +398,21 @@ const AdressFormwithoutReactMemo = ({
                             {...params}
                             fullWidth
                             placeholder="Airlines"
-                            variant="outlined"
+                            style={{
+                              height: "40px",
+                              border: "none",
+                              backgroundColor: "#191929",
+                              paddingLeft: "10px",
+                            }}
+                            InputProps={{
+                              ...params.InputProps,
+                              classes: {
+                                root: classes.inputDateTime,
+                                input: classes.input, // class name, e.g. `classes-nesting-root-x`
+                                notchedOutline: classes.noBorder,
+                              },
+                              disableUnderline: true,
+                            }}
                           />
                         )
                       }}
@@ -362,8 +436,21 @@ const AdressFormwithoutReactMemo = ({
                           name="flightNumber"
                           variant="outlined"
                           placeholder="Flight number"
+                          style={{
+                            height: "40px",
+                            border: "none",
+                            backgroundColor: "#191929",
+                            width: "170px",
+                            marginBottom: "-30px",
+                            marginTop: "-10px",
+                          }}
                           defaultValue={null}
                           InputProps={{
+                            classes: {
+                              root: classes.inputDateTime,
+                              input: classes.input, // class name, e.g. `classes-nesting-root-x`
+                              notchedOutline: classes.noBorder,
+                            },
                             startAdornment: (
                               <InputAdornment position="start">
                                 <Ticket />
@@ -403,43 +490,53 @@ const AdressFormwithoutReactMemo = ({
                     justify="space-between"
                   >
                     <Grid item style={{ width: "47%" }}>
-                      <DateInputControl
-                        name="orderStartDate"
-                        // inputVariant="primary"
-                        // label="Pick up Date"
-                        style={{
-                          backgroundColor: "#191929",
-                          paddingLeft: "10px",
-                        }}
-                        placeholder="Pick up Date"
-                        defaultValue={null}
-                        disablePast
-                        fullWidth
-                        // classes={{
-                        //   root: classes.root, // class name, e.g. `classes-nesting-root-x`
-                        //   label: classes.label, // class name, e.g. `classes-nesting-label-x`
-                        // }}
-                        InputProps={{
-                          classes: {
-                            input: classes.input, // class name, e.g. `classes-nesting-root-x`
-                          },
-                          disableUnderline: true,
-                          startAdornment: (
-                            <InputAdornment
-                              position="start"
-                              style={{ marginRight: "12px" }}
-                            >
-                              <DateIcon />
-                            </InputAdornment>
-                          ),
-                        }}
-                      />
+                      <ThemeProvider theme={materialTheme}>
+                        <DateInputControl
+                          name="orderStartDate"
+                          // inputVariant="primary"
+                          // label="Pick up Date"
+                          inputVariant="outlined"
+                          style={{
+                            backgroundColor: "#191929",
+                          }}
+                          placeholder="Pick up Date"
+                          defaultValue={null}
+                          disablePast
+                          fullWidth
+                          // classes={{
+                          //   root: classes.root, // class name, e.g. `classes-nesting-root-x`
+                          //   label: classes.label, // class name, e.g. `classes-nesting-label-x`
+                          // }}
+                          InputProps={{
+                            classes: {
+                              root: classes.inputDateTime,
+                              input: classes.input, // class name, e.g. `classes-nesting-root-x`
+                              notchedOutline: classes.noBorder,
+                            },
+                            disableUnderline: true,
+                            startAdornment: (
+                              <InputAdornment
+                                position="start"
+                                style={{
+                                  marginRight: "10px",
+                                  marginLeft: "-3px",
+                                }}
+                              >
+                                <DateIcon />
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      </ThemeProvider>
                     </Grid>
                     <Grid item style={{ width: "47%" }}>
                       <TimeInputControl
                         name="orderStartTime"
-                        // inputVariant="inline"
-                        style={{ backgroundColor: "#191929" }}
+                        inputVariant="outlined"
+                        style={{
+                          backgroundColor: "#191929",
+                          height: "40px",
+                        }}
                         // label="Pick up Time"
                         placeholder="Pick up Time"
                         defaultValue={null}
@@ -447,7 +544,9 @@ const AdressFormwithoutReactMemo = ({
                         fullWidth
                         InputProps={{
                           classes: {
+                            root: classes.inputDateTime,
                             input: classes.input, // class name, e.g. `classes-nesting-root-x`
+                            notchedOutline: classes.noBorder,
                           },
                           disableUnderline: true,
                           startAdornment: (
@@ -461,12 +560,12 @@ const AdressFormwithoutReactMemo = ({
                   </Grid>
                 </MuiPickersUtilsProvider>
               </Grid>
-              <Grid item style={{ width: "100%" }}>
+              <Grid item style={{ width: "100%", marginTop: "-10px" }}>
                 <PassengerQuantity
                   passengersqState={formData.passengersQuantity}
                 />
               </Grid>
-              <Grid item style={{ width: "100%" }}>
+              <Grid item style={{ width: "100%", marginTop: "-10px" }}>
                 <Grid
                   container
                   direction="row"
@@ -480,7 +579,7 @@ const AdressFormwithoutReactMemo = ({
                       style={{ paddingLeft: "-12px" }}
                     >
                       <HourlyIcon></HourlyIcon>
-                      <Typography style={{ color: "white", fontSize: "16px" }}>
+                      <Typography style={{ color: "white", fontSize: "14px" }}>
                         Hourly
                       </Typography>
                     </Grid>
@@ -629,26 +728,34 @@ const AdressFormwithoutReactMemo = ({
                 </Grid>
                 <Grid item className={classes.submitButton}>
                   <Grid container justify="center">
-                    <Button
-                      type="submit"
-                      color="primary"
-                      variant="contained"
-                      fullWidth
-                      style={{ height: "40px", borderRadius: "8px" }}
-                      endIcon={<ForwardArrowIcon />}
-                      disabled={
-                        destinations[0].rideCheckPoint &&
-                        destinations[1].rideCheckPoint &&
-                        carSelectionID &&
-                        bookingType
-                          ? false
-                          : true
-                      }
+                    <Tooltip
+                      title="ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+                      arrow
                     >
-                      <Typography variant="body2" style={{ fontSize: "16px" }}>
-                        Next step
-                      </Typography>
-                    </Button>
+                      <Button
+                        type="submit"
+                        color="primary"
+                        variant="contained"
+                        fullWidth
+                        style={{ height: "40px", borderRadius: "8px" }}
+                        endIcon={<ForwardArrowIcon />}
+                        // disabled={
+                        //   destinations[0].rideCheckPoint &&
+                        //   destinations[1].rideCheckPoint &&
+                        //   carSelectionID &&
+                        //   bookingType
+                        //     ? false
+                        //     : true
+                        // }
+                      >
+                        <Typography
+                          variant="body2"
+                          style={{ fontSize: "14px" }}
+                        >
+                          Next step
+                        </Typography>
+                      </Button>
+                    </Tooltip>
                   </Grid>
                 </Grid>
               </Grid>
@@ -673,4 +780,5 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   getCarsByType,
   getCompanyCars,
+  setFormData,
 })(AdressForm)

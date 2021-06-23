@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: "-1px",
 
     "&::-webkit-scrollbar": {
-      width: "0.8em",
+      width: "0.65em",
       top: "100px",
     },
     "&::-webkit-scrollbar-thumb": {
