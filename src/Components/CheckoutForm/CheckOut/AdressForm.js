@@ -138,18 +138,22 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#3c365e",
     },
   },
-  noBorder: {
+  noBorderDefault: {
     border: "1px solid #191929",
+  },
+  noBorderRed: {
+    border: "1px solid #db5858",
   },
   inputDateTime: {
     height: "40px",
+    fontSize: "14px",
   },
 }))
 
 const AntSwitch = withStyles((theme) => ({
   root: {
-    width: 42,
-    height: 24,
+    width: 38,
+    height: 21,
     padding: 0,
     display: "flex",
   },
@@ -172,8 +176,8 @@ const AntSwitch = withStyles((theme) => ({
     },
   },
   thumb: {
-    width: 17,
-    height: 17,
+    width: 14,
+    height: 14,
     boxShadow: "none",
     marginTop: "1.5px",
     marginLeft: "2px",
@@ -255,6 +259,13 @@ const AdressFormwithoutReactMemo = ({
   const [selectedDate, handleDateChange] = useState(new Date())
   const [selectedTime, handleTimeChange] = useState(new Date())
 
+  const [redBorderOnSubmit, setRedBorderOnSubmit] = useState(false)
+  const [redBorderOnSubmit2, setRedBorderOnSubmit2] = useState(false)
+  const [redBorderOnSubmitForDate, setRedBorderOnSubmitForDate] =
+    useState(false)
+  const [redBorderOnSubmitForTime, setRedBorderOnSubmitForTime] =
+    useState(false)
+
   const [destinations, setDestinations] = useState([
     {
       rideCheckPoint: "",
@@ -282,34 +293,86 @@ const AdressFormwithoutReactMemo = ({
   })
 
   const onSubmit = (data) => {
-    getCompanyCars({
-      hours: data.hours,
-      isAirportPickupIncluded: isGateMeeting,
-      airlines: { id: airlineId },
-      orderAddressDetails: [...destinations],
-      page: pageSize,
-      bookingType: bookingType,
-      typeId: carSelectionID,
-    })
+    // console.log(data.orderStartDate, data.orderStartTime)
 
-    const forRes = (data.orderStartDate =
-      selectedDate.toLocaleDateString("en-GB"))
-    const forRes2 = (data.orderStartTime = selectedTime.toLocaleTimeString(
-      "en-US",
-      {
+    if (
+      destinations[0].rideCheckPoint &&
+      destinations[1].rideCheckPoint &&
+      data.orderStartDate &&
+      data.orderStartTime
+    ) {
+      getCompanyCars({
+        hours: data.hours,
+        isAirportPickupIncluded: isGateMeeting,
+        airlines: { id: airlineId },
+        orderAddressDetails: [...destinations],
+        page: pageSize,
+        bookingType: bookingType,
+        typeId: carSelectionID,
+      })
+      var forRes = data.orderStartDate.toLocaleDateString("en-GB")
+      var forRes2 = data.orderStartTime.toLocaleTimeString("en-US", {
         hour: "numeric",
         minute: "numeric",
+      })
+      console.log(data)
+      const resData = {
+        orderStartDate: `${forRes}`,
+        orderStartTime: `${forRes2}`,
       }
-    ))
-    setFormData(data)
-    console.log(data)
-    if (destinations[0].rideCheckPoint && destinations[1].rideCheckPoint) {
+
+      setFormData(resData)
+
       next()
     } else {
-      alert("dasfasdf")
+      if (!destinations[0].rideCheckPoint) {
+        setRedBorderOnSubmit(true)
+      } else {
+        setRedBorderOnSubmit(false)
+      }
+      if (!destinations[1].rideCheckPoint) {
+        setRedBorderOnSubmit2(true)
+      } else {
+        setRedBorderOnSubmit2(false)
+      }
+      if (!data.orderStartDate?.toLocaleDateString("en-GB")) {
+        setRedBorderOnSubmitForDate(true)
+      } else {
+        setRedBorderOnSubmitForDate(false)
+      }
+      if (
+        !data.orderStartTime?.toLocaleTimeString("en-US", {
+          hour: "numeric",
+          minute: "numeric",
+        })
+      ) {
+        setRedBorderOnSubmitForTime(true)
+      } else {
+        setRedBorderOnSubmitForTime(false)
+      }
     }
+    // if (destinations[1].rideCheckPoint) {
+    //   getCompanyCars({
+    //     hours: data.hours,
+    //     isAirportPickupIncluded: isGateMeeting,
+    //     airlines: { id: airlineId },
+    //     orderAddressDetails: [...destinations],
+    //     page: pageSize,
+    //     bookingType: bookingType,
+    //     typeId: carSelectionID,
+    //   })
 
-    // console.log(data, destinations, `cars = ${typeof carSelectionID}`)
+    //   const resData = {
+    //     orderStartDate: `${forRes}`,
+    //     orderStartTime: `${forRes2}`,
+    //   }
+
+    //   setFormData(resData)
+
+    //   next()
+    // } else {
+    //   setRedBorderOnSubmit2(true)
+    // }
   }
 
   let firstAirline = destinations[0].placeType
@@ -360,10 +423,9 @@ const AdressFormwithoutReactMemo = ({
               orderAddressDetails={formData.orderAddressDetails}
               ref={register({ required: "Name is required" })}
               setValue={setValue}
-              stateValueFrom={destinations[0].rideCheckPoint}
-              stateValueTo={destinations[1].rideCheckPoint}
+              redBorderOnSubmit={redBorderOnSubmit}
+              redBorderOnSubmit2={redBorderOnSubmit2}
             />
-            {console.log(errors)}
           </Grid>
           <Grid container justify="center">
             <Grid
@@ -481,7 +543,7 @@ const AdressFormwithoutReactMemo = ({
                   </Grid>
                 </>
               )}
-              <Grid item style={{ width: "100%", marginTop: " -15px" }}>
+              <Grid item style={{ width: "100%" }}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <Grid
                     container
@@ -490,44 +552,51 @@ const AdressFormwithoutReactMemo = ({
                     justify="space-between"
                   >
                     <Grid item style={{ width: "47%" }}>
-                      <ThemeProvider theme={materialTheme}>
-                        <DateInputControl
-                          name="orderStartDate"
-                          // inputVariant="primary"
-                          // label="Pick up Date"
-                          inputVariant="outlined"
-                          style={{
-                            backgroundColor: "#191929",
-                          }}
-                          placeholder="Pick up Date"
-                          defaultValue={null}
-                          disablePast
-                          fullWidth
-                          // classes={{
-                          //   root: classes.root, // class name, e.g. `classes-nesting-root-x`
-                          //   label: classes.label, // class name, e.g. `classes-nesting-label-x`
-                          // }}
-                          InputProps={{
-                            classes: {
-                              root: classes.inputDateTime,
-                              input: classes.input, // class name, e.g. `classes-nesting-root-x`
-                              notchedOutline: classes.noBorder,
-                            },
-                            disableUnderline: true,
-                            startAdornment: (
-                              <InputAdornment
-                                position="start"
-                                style={{
-                                  marginRight: "10px",
-                                  marginLeft: "-3px",
-                                }}
-                              >
-                                <DateIcon />
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                      </ThemeProvider>
+                      {/* <ThemeProvider theme={materialTheme}> */}
+                      <DateInputControl
+                        name="orderStartDate"
+                        // inputVariant="primary"
+                        // label="Pick up Date"
+                        inputVariant="outlined"
+                        style={{
+                          backgroundColor: "#191929",
+                        }}
+                        placeholder="Pick up Date"
+                        defaultValue={null}
+                        disablePast
+                        fullWidth
+                        // onChange={(event, x) => {
+                        //   handleDateChange(event)
+                        //   console.log(x)
+                        // }}
+                        // classes={{
+                        //   root: classes.root, // class name, e.g. `classes-nesting-root-x`
+                        //   label: classes.label, // class name, e.g. `classes-nesting-label-x`
+                        // }}
+                        InputProps={{
+                          classes: {
+                            root: classes.inputDateTime,
+                            input: classes.input, // class name, e.g. `classes-nesting-root-x`
+                            notchedOutline: redBorderOnSubmitForDate
+                              ? classes.noBorderRed
+                              : classes.noBorderDefault,
+                          },
+                          disableUnderline: true,
+                          startAdornment: (
+                            <InputAdornment
+                              position="start"
+                              style={{
+                                marginRight: "10px",
+                                marginLeft: "-3px",
+                              }}
+                            >
+                              <DateIcon />
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+
+                      {/* </ThemeProvider> */}
                     </Grid>
                     <Grid item style={{ width: "47%" }}>
                       <TimeInputControl
@@ -546,7 +615,9 @@ const AdressFormwithoutReactMemo = ({
                           classes: {
                             root: classes.inputDateTime,
                             input: classes.input, // class name, e.g. `classes-nesting-root-x`
-                            notchedOutline: classes.noBorder,
+                            notchedOutline: redBorderOnSubmitForTime
+                              ? classes.noBorderRed
+                              : classes.noBorderDefault,
                           },
                           disableUnderline: true,
                           startAdornment: (
@@ -728,34 +799,26 @@ const AdressFormwithoutReactMemo = ({
                 </Grid>
                 <Grid item className={classes.submitButton}>
                   <Grid container justify="center">
-                    <Tooltip
-                      title="ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-                      arrow
+                    <Button
+                      type="submit"
+                      color="primary"
+                      variant="contained"
+                      fullWidth
+                      style={{ height: "40px", borderRadius: "8px" }}
+                      endIcon={<ForwardArrowIcon />}
+                      // disabled={
+                      //   destinations[0].rideCheckPoint &&
+                      //   destinations[1].rideCheckPoint &&
+                      //   carSelectionID &&
+                      //   bookingType
+                      //     ? false
+                      //     : true
+                      // }
                     >
-                      <Button
-                        type="submit"
-                        color="primary"
-                        variant="contained"
-                        fullWidth
-                        style={{ height: "40px", borderRadius: "8px" }}
-                        endIcon={<ForwardArrowIcon />}
-                        // disabled={
-                        //   destinations[0].rideCheckPoint &&
-                        //   destinations[1].rideCheckPoint &&
-                        //   carSelectionID &&
-                        //   bookingType
-                        //     ? false
-                        //     : true
-                        // }
-                      >
-                        <Typography
-                          variant="body2"
-                          style={{ fontSize: "14px" }}
-                        >
-                          Next step
-                        </Typography>
-                      </Button>
-                    </Tooltip>
+                      <Typography variant="body2" style={{ fontSize: "14px" }}>
+                        Next step
+                      </Typography>
+                    </Button>
                   </Grid>
                 </Grid>
               </Grid>

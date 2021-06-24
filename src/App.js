@@ -69,7 +69,9 @@ const App = (props) => {
   }
 
   const enableAccordionButton = (e) => {
-    setDisabled(false)
+    setTimeout(() => {
+      setDisabled(false)
+    }, 120)
     setHeightOfCard(refOfCard.current.clientHeight)
 
     {
@@ -118,7 +120,10 @@ const App = (props) => {
   const handleDrag = (e, ui) => {
     position.current.x = ui.x
     position.current.y = ui.y
-    if (!expanded) setDisabled(true)
+    if (!expanded)
+      setTimeout(() => {
+        setDisabled(true)
+      }, 120)
   }
 
   const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1)
@@ -263,6 +268,7 @@ const App = (props) => {
                               : { overflowY: "auto" }
                           }
                           ref={refOfCard}
+                          style={{ borderRadius: "20px" }}
                         >
                           <AppBar position="sticky" color=" #101020">
                             <div className="companyProfileClassForDrag">
@@ -278,6 +284,7 @@ const App = (props) => {
                               </div>
                             </div>
                           </AppBar>
+
                           {props.initializing ? (
                             <CheckOut
                               isFetching={props.isFetching}
@@ -286,7 +293,6 @@ const App = (props) => {
                               setActiveStep={setActiveStep}
                               nextStep={nextStep}
                               backStep={backStep}
-                              className={classes.checkOut}
                             />
                           ) : null}
                         </Card>

@@ -73,14 +73,13 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     cursor: "default",
     height: "80vh",
-    width: "400px",
+    width: "436px",
     // borderTopRightRadius: '30px',
     // borderTopLeftRadius: '30px',
     // borderBottomRight: '0px',
     // borderBottomLeft: '0px',
-    borderRadius: "0",
     bottom: "-1px",
-
+    overflowY: "scroll",
     "&::-webkit-scrollbar": {
       width: "0.65em",
       top: "100px",

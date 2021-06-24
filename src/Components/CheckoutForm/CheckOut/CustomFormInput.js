@@ -145,7 +145,7 @@ export const TimeInputControl = ({ name, required, ...props }) => {
 
   return (
     <Controller
-      as={TimePicker}
+      as={KeyboardTimePicker}
       name={name}
       required={required}
       style={{ cursor: "pointer" }}

@@ -19,6 +19,8 @@ import {
 import rideCheckPointErrors from "./../CheckoutForm/CheckOut/AdressForm"
 import MapStyles from "./mapStyles"
 
+var redBorder = null
+
 const useStyles = makeStyles((theme) => ({
   mapContainer: {
     width: "91.5%",
@@ -26,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     marginLeft: "17px",
     borderRadius: "20px",
-    marginBottom: "20px",
   },
   destinationContainer: {
     padding: theme.spacing(1),
@@ -49,8 +50,11 @@ const useStyles = makeStyles((theme) => ({
     },
     fontSize: "14px",
   },
-  noBorder: {
+  noBorderDefault: {
     border: "1px solid #191929",
+  },
+  noBorderRed: {
+    border: "1px solid #db5858",
   },
   input: {
     // "&::-webkit-input-placeholder": {
@@ -85,13 +89,11 @@ const GoogleMap = React.memo(
       orderAddressDetails,
       ref,
       errors,
-      stateValueFrom,
-      stateValueTo,
+      redBorderOnSubmit,
+      redBorderOnSubmit2,
       ...props
     }) => {
-      const classes = useStyles()
-
-      // const { register, errors } = useFormContext()
+      const classes = useStyles(redBorderOnSubmit)
 
       const [condition, setCondition] = useState([])
 
@@ -207,17 +209,19 @@ const GoogleMap = React.memo(
                             style={{
                               height: "40px",
                               border: "none",
-                              marginTop: "-17px",
+                              marginTop: "-4px",
                             }}
                             variant="outlined"
                             name="rideCheckPoint"
                             defaultValue={destinations[id].rideCheckPoint}
                             fullWidth
-                            inputRef={ref}
+                            // inputRef={ref}
                             InputProps={{
                               classes: {
                                 root: classes.inputRoot,
-                                notchedOutline: classes.noBorder,
+                                notchedOutline: redBorderOnSubmit
+                                  ? classes.noBorderRed
+                                  : classes.noBorderDefault,
                                 input: classes.input,
                               },
 
@@ -271,7 +275,6 @@ const GoogleMap = React.memo(
                               className: "location-search-input",
                             })}
                           />
-                          <p>{errors}</p>
                         </Grid>
                         <div className={classes.dropDown}>
                           {loading && (
