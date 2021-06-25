@@ -268,7 +268,7 @@ const App = (props) => {
                               : { overflowY: "auto" }
                           }
                           ref={refOfCard}
-                          style={{ borderRadius: "20px" }}
+                          // style={{ borderRadius: "10px" }}
                         >
                           <AppBar position="sticky" color=" #101020">
                             <div className="companyProfileClassForDrag">

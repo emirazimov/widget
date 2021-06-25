@@ -78,6 +78,7 @@ const useStyles = makeStyles((theme) => ({
     // borderTopLeftRadius: '30px',
     // borderBottomRight: '0px',
     // borderBottomLeft: '0px',
+
     bottom: "-1px",
     overflowY: "scroll",
     "&::-webkit-scrollbar": {

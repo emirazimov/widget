@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     paddingTop: "8px",
     paddingBottom: "8px",
+
     overflow: "visible",
   },
   carInfoCont: {
@@ -93,246 +94,281 @@ const Preview = ({
           spacing={2}
           className={classes.contentContainer}
         >
-          <Grid item>
-            <ListItem className={classes.root}>
-              <Grid
-                container
-                direction="row"
-                justify="space-around"
-                alignItems="center"
-              >
-                <Grid item>
-                  <Carousel
-                    autoPlay={false}
-                    animation="slide"
-                    navButtonsProps={{
-                      style: {
-                        width: "1em",
-                        height: "1em",
-                      },
-                    }}
-                    indicatorIconButtonProps={{
-                      style: {
-                        "&:hover": {
-                          "& $button": {
-                            backgroundColor: "#10B7EC",
-                            filter: "brightness(120%)",
-                            opacity: "0.4",
-                          },
+          <Grid
+            item
+            style={{
+              height: "135px",
+              paddingRight: "14.5px",
+              marginTop: "10px",
+            }}
+          >
+            <Grid
+              container
+              direction="row"
+              justify="space-between"
+              alignItems="center"
+            >
+              <Grid item>
+                <Carousel
+                  autoPlay={false}
+                  animation="slide"
+                  navButtonsProps={{
+                    style: {
+                      width: "1em",
+                      height: "1em",
+                    },
+                  }}
+                  indicatorIconButtonProps={{
+                    style: {
+                      "&:hover": {
+                        "& $button": {
+                          backgroundColor: "#10B7EC",
+                          filter: "brightness(120%)",
+                          opacity: "0.4",
                         },
-                        marginTop: "-80px",
-                        color: "grey",
                       },
-                    }}
-                    activeIndicatorIconButtonProps={{
-                      style: {
-                        color: "white",
-                      },
-                    }}
-                    indicatorContainerProps={{
-                      style: { height: "0px" },
-                    }}
-                  >
-                    {selectedCar.imageUrls.map((url) => (
-                      <>
-                        <span
+                      marginTop: "-80px",
+                      color: "grey",
+                    },
+                  }}
+                  activeIndicatorIconButtonProps={{
+                    style: {
+                      color: "white",
+                    },
+                  }}
+                  indicatorContainerProps={{
+                    style: { height: "0px" },
+                  }}
+                >
+                  {selectedCar.imageUrls.length !== 0 ? (
+                    selectedCar.imageUrls.map((url) => (
+                      <span key={url.id} variant="outlined" color="primary">
+                        <div
                           style={{
                             position: "absolute",
                             width: "75px",
                             height: "20px",
                             backgroundColor: "#313159",
                             borderBottomRightRadius: "10px",
-                            borderTopLeftRadius: "6px",
                             fontSize: "13px",
                             paddingLeft: "12px",
                           }}
                         >
                           or similar
-                        </span>
+                        </div>
                         <img
                           src={url.path}
                           style={{
-                            width: "150px",
+                            width: "170px",
                             height: "120px",
                             borderRadius: "8px",
+                            cursor: "zoom-in",
                           }}
                           alt="car"
-                          key={url.id}
                         />
-                      </>
-                    ))}
-                  </Carousel>
-                </Grid>
-                <Grid item style={{ width: "150px" }}>
-                  <Grid
-                    container
-                    direction="column"
-                    spacing={2}
-                    className={classes.carInfoCont}
-                  >
-                    <Typography variant="body2" style={{ fontSize: "18px" }}>
-                      {selectedCar.make} {selectedCar.model}
-                    </Typography>
+                      </span>
+                    ))
+                  ) : (
+                    <>
+                      <span
+                        style={{
+                          position: "absolute",
+                          width: "75px",
+                          height: "20px",
+                          backgroundColor: "#313159",
+                          borderTopLeftRadius: "6px",
+                          borderBottomRightRadius: "10px",
+                          fontSize: "13px",
+                          paddingLeft: "12px",
+                        }}
+                      >
+                        or similar
+                      </span>
+                      <img
+                        src={
+                          "https://fl-1.cdn.flockler.com/embed/not-found.png"
+                        }
+                        style={{
+                          width: "170px",
+                          height: "120px",
+                          borderRadius: "8px",
+                        }}
+                        alt="car"
+                      />
+                    </>
+                  )}
+                </Carousel>
+              </Grid>
+              <Grid item style={{ width: "45%" }}>
+                <Grid
+                  container
+                  direction="column"
+                  spacing={2}
+                  className={classes.carInfoCont}
+                >
+                  <Typography variant="body2" style={{ fontSize: "18px" }}>
+                    {selectedCar.make} {selectedCar.model}
+                  </Typography>
 
-                    {/* <Typography
+                  {/* <Typography
                             variant='body2'
                             style={{ fontSize: '18px' }}
                           ></Typography> */}
 
-                    <Grid
-                      container
-                      justify="row"
-                      justify="space-between"
-                      alignItems="center"
-                    >
-                      <Grid item>
-                        <Typography
-                          style={{
-                            color: "white",
-                            fontSize: "12px",
-                            fontWeight: "400",
-                          }}
-                        >
-                          Type
-                        </Typography>
-                      </Grid>
-                      <Grid item style={{ flexGrow: 1 }}>
-                        <Box
-                          style={{
-                            marginTop: "13px",
-                            backgroundColor: "transparent",
-                            borderColor: "#736994",
-                            borderStyle: "dashed",
-                            borderWidth: "1px",
-                          }}
-                        />
-                      </Grid>
-                      <Grid item>
-                        <Typography
-                          style={{
-                            color: "white",
-                            fontSize: "12px",
-                            fontWeight: "400",
-                          }}
-                        >
-                          {selectedCar.type}
-                        </Typography>
-                      </Grid>
+                  <Grid
+                    container
+                    justify="row"
+                    justify="space-between"
+                    alignItems="center"
+                  >
+                    <Grid item>
+                      <Typography
+                        style={{
+                          color: "white",
+                          fontSize: "13px",
+                          fontWeight: "400",
+                        }}
+                      >
+                        Type
+                      </Typography>
                     </Grid>
+                    <Grid item style={{ flexGrow: 1 }}>
+                      <Box
+                        style={{
+                          marginTop: "13px",
+                          backgroundColor: "transparent",
+                          borderColor: "#736994",
+                          borderStyle: "dashed",
+                          borderWidth: "1px",
+                        }}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <Typography
+                        style={{
+                          color: "white",
+                          fontSize: "13px",
+                          fontWeight: "400",
+                        }}
+                      >
+                        {selectedCar.type}
+                      </Typography>
+                    </Grid>
+                  </Grid>
 
-                    <Grid
-                      container
-                      justify="row"
-                      justify="space-between"
-                      alignItems="center"
-                    >
-                      <Grid item>
-                        <Typography
-                          style={{
-                            color: "white",
-                            fontSize: "12px",
-                            fontWeight: "400",
-                          }}
-                        >
-                          Capacity
-                        </Typography>
-                      </Grid>
-                      <Grid item style={{ flexGrow: 1 }}>
-                        <Box
-                          style={{
-                            marginTop: "13px",
-                            backgroundColor: "transparent",
-                            borderColor: "#736994",
-                            borderStyle: "dashed",
-                            borderWidth: "1px",
-                          }}
-                        />
-                      </Grid>
-                      <Grid item>
-                        <Typography
-                          style={{
-                            color: "white",
-                            fontSize: "12px",
-                            fontWeight: "400",
-                          }}
-                        >
-                          {selectedCar.capacity}
-                        </Typography>
-                      </Grid>
+                  <Grid
+                    container
+                    justify="row"
+                    justify="space-between"
+                    alignItems="center"
+                  >
+                    <Grid item>
+                      <Typography
+                        style={{
+                          color: "white",
+                          fontSize: "13px",
+                          fontWeight: "400",
+                        }}
+                      >
+                        Capacity
+                      </Typography>
                     </Grid>
+                    <Grid item style={{ flexGrow: 1 }}>
+                      <Box
+                        style={{
+                          marginTop: "13px",
+                          backgroundColor: "transparent",
+                          borderColor: "#736994",
+                          borderStyle: "dashed",
+                          borderWidth: "1px",
+                        }}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <Typography
+                        style={{
+                          color: "white",
+                          fontSize: "13px",
+                          fontWeight: "400",
+                        }}
+                      >
+                        {selectedCar.capacity}
+                      </Typography>
+                    </Grid>
+                  </Grid>
 
-                    <Grid container justify="row">
-                      <Grid item>
-                        <Typography
-                          style={{
-                            color: "white",
-                            fontSize: "12px",
-                            fontWeight: "400",
-                          }}
-                        >
-                          Color
-                        </Typography>
-                      </Grid>
-                      <Grid item style={{ flexGrow: 1 }}>
-                        <Box
-                          style={{
-                            marginTop: "13px",
-                            backgroundColor: "transparent",
-                            borderColor: "#736994",
-                            borderStyle: "dashed",
-                            borderWidth: "1px",
-                          }}
-                        />
-                      </Grid>
-                      <Grid item>
-                        <Typography
-                          style={{
-                            color: "white",
-                            fontSize: "12px",
-                            fontWeight: "400",
-                          }}
-                        >
-                          white
-                        </Typography>
-                      </Grid>
+                  <Grid container justify="row">
+                    <Grid item>
+                      <Typography
+                        style={{
+                          color: "white",
+                          fontSize: "13px",
+                          fontWeight: "400",
+                        }}
+                      >
+                        Color
+                      </Typography>
                     </Grid>
+                    <Grid item style={{ flexGrow: 1 }}>
+                      <Box
+                        style={{
+                          marginTop: "13px",
+                          backgroundColor: "transparent",
+                          borderColor: "#736994",
+                          borderStyle: "dashed",
+                          borderWidth: "1px",
+                        }}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <Typography
+                        style={{
+                          color: "white",
+                          fontSize: "13px",
+                          fontWeight: "400",
+                        }}
+                      >
+                        white
+                      </Typography>
+                    </Grid>
+                  </Grid>
 
-                    <Grid container justify="row">
-                      <Grid item>
-                        <Typography
-                          style={{
-                            color: "white",
-                            fontSize: "12px",
-                            fontWeight: "400",
-                          }}
-                        >
-                          Amount
-                        </Typography>
-                      </Grid>
-                      <Grid item style={{ flexGrow: 1 }}>
-                        <Box
-                          style={{
-                            marginTop: "13px",
-                            backgroundColor: "transparent",
-                            borderColor: "#736994",
-                            borderStyle: "dashed",
-                            borderWidth: "1px",
-                          }}
-                        />
-                      </Grid>
-                      <Grid item>
-                        <Typography
-                          style={{
-                            color: "white",
-                            fontSize: "16px",
-                            fontWeight: "500",
-                          }}
-                        >
-                          ${selectedCar.price}
-                        </Typography>
-                      </Grid>
+                  <Grid container justify="row">
+                    <Grid item>
+                      <Typography
+                        style={{
+                          color: "white",
+                          fontSize: "13px",
+                          fontWeight: "400",
+                        }}
+                      >
+                        Amount
+                      </Typography>
                     </Grid>
-                    {/* <Grid item xs={8}>
+                    <Grid item style={{ flexGrow: 1 }}>
+                      <Box
+                        style={{
+                          marginTop: "13px",
+                          backgroundColor: "transparent",
+                          borderColor: "#736994",
+                          borderStyle: "dashed",
+                          borderWidth: "1px",
+                        }}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <Typography
+                        style={{
+                          color: "white",
+                          fontSize: "16px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        ${selectedCar.price}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  {/* <Grid item xs={8}>
                             <Paper className={classes.priceBox}>
                               <Grid container justify="center">
                                 <Typography variant="body2">
@@ -341,10 +377,9 @@ const Preview = ({
                               </Grid>
                             </Paper>
                           </Grid> */}
-                  </Grid>
                 </Grid>
               </Grid>
-            </ListItem>
+            </Grid>
           </Grid>
           <Grid item>
             <Grid
@@ -370,7 +405,13 @@ const Preview = ({
                 />
               </Grid>
               <Grid item>
-                <Typography style={{ color: "white", fontSize: "16px" }}>
+                <Typography
+                  style={{
+                    color: "white",
+                    fontSize: "16px",
+                    marginRight: "-3px",
+                  }}
+                >
                   {formData.orderStartDate}
                   {console.log(formData)}
                 </Typography>

@@ -23,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: "0px",
     paddingBottom: "0px",
     cursor: "pointer",
+    // "&:hover": {
+    //   backgroundColor: "red",
+    // },
+    // "&$selected": { backgroundColor: "white" },
   },
   contentContainer: {
     padding: theme.spacing(2),
@@ -62,11 +66,21 @@ const useStyles = makeStyles((theme) => ({
     },
     margin: "0px",
     marginTop: "-10px",
-    width: "150px",
+    width: "170px",
   },
   listRoot: {
-    opacity: "0.7",
+    opacity: "0.5",
     "&:hover": { opacity: "1" },
+  },
+
+  active: {
+    "&.Mui-selected": {
+      backgroundColor: "#313159",
+    },
+    "&.Mui-selected:hover": {
+      backgroundColor: "#313159",
+    },
+    opacity: "1",
   },
 }))
 
@@ -110,7 +124,7 @@ const FleetForm = React.memo(({ cars, isFetching, back, next, setCarId }) => {
         container
         justify="center"
         style={{
-          height: isMobile ? "86%" : "90%",
+          height: isMobile ? "86%" : "89%",
           paddingTop: isMobile ? "0px" : "0px",
         }}
       >
@@ -142,7 +156,7 @@ const FleetForm = React.memo(({ cars, isFetching, back, next, setCarId }) => {
           <Grid
             item
             className={classes.carContainer}
-            style={{ paddingBottom: "20px" }}
+            style={{ paddingBottom: "10px" }}
           >
             <Grid container direction="column" spacing={2}>
               {cars.map((car, index) => (
@@ -155,7 +169,7 @@ const FleetForm = React.memo(({ cars, isFetching, back, next, setCarId }) => {
                     selected={car.id === carCard}
                     classes={{
                       root: classes.listRoot,
-                      selected: classes.listSelected,
+                      selected: car.id && classes.active,
                     }}
                     // style={{
                     //   opacity: "0.5",
@@ -165,10 +179,13 @@ const FleetForm = React.memo(({ cars, isFetching, back, next, setCarId }) => {
                     <Grid
                       container
                       direction="row"
-                      justify="space-around"
+                      justify="space-between"
                       alignItems="center"
                     >
-                      <Grid item>
+                      <Grid
+                        item
+                        style={{ marginLeft: "13px", marginBottom: "-2px" }}
+                      >
                         <Carousel
                           autoPlay={false}
                           animation="slide"
@@ -181,7 +198,7 @@ const FleetForm = React.memo(({ cars, isFetching, back, next, setCarId }) => {
                           indicatorIconButtonProps={{
                             style: {
                               "&:hover": {
-                                "& $button": {
+                                "&$button": {
                                   backgroundColor: "#10B7EC",
                                   filter: "brightness(120%)",
                                   opacity: "0.4",
@@ -226,8 +243,8 @@ const FleetForm = React.memo(({ cars, isFetching, back, next, setCarId }) => {
                                 <img
                                   src={url.path}
                                   style={{
-                                    width: "150px",
-                                    height: "120px",
+                                    width: "170px",
+                                    height: "127px",
                                     borderRadius: "8px",
                                     cursor: "zoom-in",
                                   }}
@@ -255,7 +272,7 @@ const FleetForm = React.memo(({ cars, isFetching, back, next, setCarId }) => {
                                   "https://fl-1.cdn.flockler.com/embed/not-found.png"
                                 }
                                 style={{
-                                  width: "150px",
+                                  width: "170px",
                                   height: "120px",
                                   borderRadius: "8px",
                                 }}
@@ -320,7 +337,7 @@ const FleetForm = React.memo(({ cars, isFetching, back, next, setCarId }) => {
                           </Dialog>
                         )}
                       </Grid>
-                      <Grid item>
+                      <Grid item style={{ width: "46.5%" }}>
                         <Grid
                           container
                           direction="row"
@@ -349,7 +366,7 @@ const FleetForm = React.memo(({ cars, isFetching, back, next, setCarId }) => {
                               <Typography
                                 style={{
                                   color: "white",
-                                  fontSize: "12px",
+                                  fontSize: "13px",
                                   fontWeight: "400",
                                 }}
                               >
@@ -371,7 +388,7 @@ const FleetForm = React.memo(({ cars, isFetching, back, next, setCarId }) => {
                               <Typography
                                 style={{
                                   color: "white",
-                                  fontSize: "12px",
+                                  fontSize: "13px",
                                   fontWeight: "400",
                                 }}
                               >
@@ -390,7 +407,7 @@ const FleetForm = React.memo(({ cars, isFetching, back, next, setCarId }) => {
                               <Typography
                                 style={{
                                   color: "white",
-                                  fontSize: "12px",
+                                  fontSize: "13px",
                                   fontWeight: "400",
                                 }}
                               >
@@ -412,7 +429,7 @@ const FleetForm = React.memo(({ cars, isFetching, back, next, setCarId }) => {
                               <Typography
                                 style={{
                                   color: "white",
-                                  fontSize: "12px",
+                                  fontSize: "13px",
                                   fontWeight: "400",
                                 }}
                               >
@@ -448,7 +465,7 @@ const FleetForm = React.memo(({ cars, isFetching, back, next, setCarId }) => {
                               <Typography
                                 style={{
                                   color: "white",
-                                  fontSize: "12px",
+                                  fontSize: "13px",
                                   fontWeight: "400",
                                 }}
                               >
