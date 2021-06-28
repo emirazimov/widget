@@ -343,8 +343,8 @@ export const PlaneIcon = () => (
 export const BookinglaneIcon = () => (
   <svg
     width="150"
-    height="130"
-    style={{ marginBottom: "25px" }}
+    height="105"
+    style={{ marginBottom: "50px", marginTop: "-10px" }}
     viewBox="0 0 272 188"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

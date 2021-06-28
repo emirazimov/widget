@@ -1,30 +1,30 @@
-import Accordion from '@material-ui/core/Accordion'
-import AccordionDetails from '@material-ui/core/AccordionDetails'
-import AccordionSummary from '@material-ui/core/AccordionSummary'
-import Card from '@material-ui/core/Card'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Slide from '@material-ui/core/Slide'
-import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import { ThemeProvider } from '@material-ui/styles'
+import Accordion from "@material-ui/core/Accordion"
+import AccordionDetails from "@material-ui/core/AccordionDetails"
+import AccordionSummary from "@material-ui/core/AccordionSummary"
+import Card from "@material-ui/core/Card"
+import CssBaseline from "@material-ui/core/CssBaseline"
+import Slide from "@material-ui/core/Slide"
+import Button from "@material-ui/core/Button"
+import Dialog from "@material-ui/core/Dialog"
+import { ThemeProvider } from "@material-ui/styles"
 // import { isMobile } from 'react-device-detect';
-import React, { useEffect } from 'react'
-import Draggable from 'react-draggable'
-import { connect } from 'react-redux'
-import { BookinglaneIcon } from './assets/icons'
-import CheckOut from './Components/CheckoutForm/CheckOut/CheckOut'
-import CompanyProfile from './Components/CompanyProfile/CompanyProfile'
+import React, { useEffect } from "react"
+import Draggable from "react-draggable"
+import { connect } from "react-redux"
+import { BookinglaneIcon } from "./assets/icons"
+import CheckOut from "./Components/CheckoutForm/CheckOut/CheckOut"
+import CompanyProfile from "./Components/CompanyProfile/CompanyProfile"
 import {
   getCompanyProfile,
   initializing,
-} from './Redux/company-profile-reducer'
-import { getCompanyToken } from './Redux/company-token-reducer'
-import theme from './Theme'
+} from "./Redux/company-profile-reducer"
+import { getCompanyToken } from "./Redux/company-token-reducer"
+import theme from "./Theme"
 
-import { Preloader } from './Components/Helpers/Preloader'
-import { userScreenHeight, userScreenWidth, useStyles } from './AppStyles'
-import { AppBar, useMediaQuery } from '@material-ui/core'
-import { useRef } from 'react'
+import { Preloader } from "./Components/Helpers/Preloader"
+import { userScreenHeight, userScreenWidth, useStyles } from "./AppStyles"
+import { AppBar, useMediaQuery } from "@material-ui/core"
+import { useRef } from "react"
 
 let xOrdinate = 0
 let yOrdinate = 0
@@ -130,7 +130,7 @@ const App = (props) => {
   const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1)
   const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1)
 
-  const jwtToken = localStorage.getItem('Authorization')
+  const jwtToken = localStorage.getItem("Authorization")
 
   useEffect(() => {
     if (jwtToken) {
@@ -140,10 +140,10 @@ const App = (props) => {
   }, [jwtToken])
 
   const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction='up' ref={ref} {...props} />
+    return <Slide direction="up" ref={ref} {...props} />
   })
 
-  const isMobile = useMediaQuery('(max-width:650px)')
+  const isMobile = useMediaQuery("(max-width:650px)")
 
   return (
     <>
@@ -162,14 +162,14 @@ const App = (props) => {
                 TransitionProps={{
                   timeout: 0,
                 }}
-                expanded={expanded === 'panel1'}
-                onChange={handleChange('panel1')}
+                expanded={expanded === "panel1"}
+                onChange={handleChange("panel1")}
               >
                 <AccordionSummary
                   className={classes.accordion}
                   expandIcon={<BookinglaneIcon />}
-                  aria-controls='panel1a-content'
-                  id='panel1a-header'
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
                 ></AccordionSummary>
                 <AccordionDetails>
                   {jwtToken && (
@@ -178,8 +178,8 @@ const App = (props) => {
                       style={{ bottom: userScreenHeight - yOrdinate }}
                       style={
                         activeStep === 1
-                          ? { overflowY: 'hidden' }
-                          : { overflowY: 'auto' }
+                          ? { overflowY: "hidden" }
+                          : { overflowY: "auto" }
                       }
                     >
                       <CompanyProfile
@@ -236,7 +236,7 @@ const App = (props) => {
                 position={position.current}
                 // disabled={false}
                 // bounds="body"
-                handle='.companyProfileClassForDrag, #panel1a-header'
+                handle=".companyProfileClassForDrag, #panel1a-header"
               >
                 <Accordion
                   elevation={0}
@@ -248,32 +248,32 @@ const App = (props) => {
                   TransitionProps={{
                     timeout: 0,
                   }}
-                  expanded={expanded === 'panel1'}
-                  onChange={handleChange('panel1')}
+                  expanded={expanded === "panel1"}
+                  onChange={handleChange("panel1")}
                 >
                   <AccordionSummary
                     className={classes.accordion}
                     expandIcon={<BookinglaneIcon />}
-                    aria-controls='panel1a-content'
-                    id='panel1a-header'
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
                     ref={refOfBookNow}
                   ></AccordionSummary>
                   <AccordionDetails>
                     {jwtToken && (
-                      <div className='mainContent'>
+                      <div className="mainContent">
                         <Card
                           className={classes.content}
                           style={{ bottom: userScreenHeight - yOrdinate }}
                           style={
                             activeStep === 1
-                              ? { overflowY: 'hidden' }
-                              : { overflowY: 'auto' }
+                              ? { overflowY: "hidden" }
+                              : { overflowY: "auto" }
                           }
                           ref={refOfCard}
                           // style={{ borderRadius: "10px" }}
                         >
-                          <AppBar position='sticky' color=' #101020'>
-                            <div className='companyProfileClassForDrag'>
+                          <AppBar position="sticky" color=" #101020">
+                            <div className="companyProfileClassForDrag">
                               {/* этот класс c div-oм для реакт драга чтобы можно было перетаскивать по шапке виджета*/}
                               <div className={classes.companyProfile}>
                                 {/* это для pointer cursora */}
@@ -315,7 +315,7 @@ const App = (props) => {
 const mapStateToProps = (state) => {
   return {
     isFetching: state.cars.isFetching,
-    companyName: state.companyProfile.profile.companyName,
+    // companyName: state.companyProfile.profile.companyName,
     initializing: state.companyProfile.initializing,
   }
 }
