@@ -82,7 +82,7 @@ const App = (props) => {
       yOrdinate = position.current.y
       xOrdinate = position.current.x
       if (xOrdinate + 500 > userScreenWidth) {
-        position.current.x = userScreenWidth - 430
+        position.current.x = userScreenWidth - 455
       }
       if (xOrdinate < -20) {
         position.current.x = 0
@@ -153,72 +153,72 @@ const App = (props) => {
           <CssBaseline />
           <ThemeProvider theme={theme}>
             <div className={classes.mainMobile}>
-              {/* <Draggable
+              <Draggable
                 onDrag={handleDrag}
                 onStop={enableAccordionButton}
                 position={position.current}
                 // disabled={false}
                 // bounds="body"
                 handle="#panel1a-header"
-              > */}
-              <Accordion
-                elevation={0}
-                disabled={disabled}
-                classes={{
-                  root: classes.MuiAccordionroot,
-                  disabled: classes.disabledButton,
-                }}
-                TransitionProps={{
-                  timeout: 0,
-                }}
-                expanded={expanded === "panel1"}
-                onChange={handleChange("panel1")}
               >
-                <AccordionSummary
-                  className={classes.accordion}
-                  expandIcon={<BookinglaneIconForMobile />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                  ref={refOfBookNow}
-                ></AccordionSummary>
-                <AccordionDetails>
-                  {jwtToken && (
-                    <div className="mainContent">
-                      <Card
-                        className={classes.contentMobile}
-                        style={{ bottom: userScreenHeight - yOrdinate }}
-                        style={
-                          activeStep === 1
-                            ? { overflowY: "hidden" }
-                            : { overflowY: "auto" }
-                        }
-                        ref={refOfCard}
-                        // style={{ borderRadius: "10px" }}
-                      >
-                        <CompanyProfile
-                          setExpanded={handleClose}
-                          initializing={props.initializing}
-                          expanded={expanded}
-                          setActiveStep={setActiveStep}
-                        />
-
-                        {props.initializing ? (
-                          <CheckOut
-                            isFetching={props.isFetching}
+                <Accordion
+                  elevation={0}
+                  disabled={disabled}
+                  classes={{
+                    root: classes.MuiAccordionroot,
+                    disabled: classes.disabledButton,
+                  }}
+                  TransitionProps={{
+                    timeout: 0,
+                  }}
+                  expanded={expanded === "panel1"}
+                  onChange={handleChange("panel1")}
+                >
+                  <AccordionSummary
+                    className={classes.accordion}
+                    expandIcon={<BookinglaneIconForMobile />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                    ref={refOfBookNow}
+                  ></AccordionSummary>
+                  <AccordionDetails>
+                    {jwtToken && (
+                      <div className="mainContent">
+                        <Card
+                          className={classes.contentMobile}
+                          style={{ bottom: userScreenHeight - yOrdinate }}
+                          style={
+                            activeStep === 1
+                              ? { overflowY: "hidden" }
+                              : { overflowY: "auto" }
+                          }
+                          ref={refOfCard}
+                          // style={{ borderRadius: "10px" }}
+                        >
+                          <CompanyProfile
                             setExpanded={handleClose}
-                            activeStep={activeStep}
+                            initializing={props.initializing}
+                            expanded={expanded}
                             setActiveStep={setActiveStep}
-                            nextStep={nextStep}
-                            backStep={backStep}
                           />
-                        ) : null}
-                      </Card>
-                    </div>
-                  )}
-                  {!jwtToken && null}
-                </AccordionDetails>
-              </Accordion>
-              {/* </Draggable> */}
+
+                          {props.initializing ? (
+                            <CheckOut
+                              isFetching={props.isFetching}
+                              setExpanded={handleClose}
+                              activeStep={activeStep}
+                              setActiveStep={setActiveStep}
+                              nextStep={nextStep}
+                              backStep={backStep}
+                            />
+                          ) : null}
+                        </Card>
+                      </div>
+                    )}
+                    {!jwtToken && null}
+                  </AccordionDetails>
+                </Accordion>
+              </Draggable>
             </div>
             {/* <div className={classes.main}>
 

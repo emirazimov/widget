@@ -73,7 +73,6 @@ export const getCompanyProfile = () => {
     } else {
       dispatch(setCompanyProfile(response.data))
       dispatch(initializing(true))
-      console.log(response.data)
     }
   }
 }

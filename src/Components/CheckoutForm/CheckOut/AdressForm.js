@@ -292,6 +292,14 @@ const AdressFormwithoutReactMemo = ({
         bookingType: bookingType,
         typeId: carSelectionID,
       })
+      console.log(
+        isGateMeeting,
+        airlineId,
+        destinations,
+        pageSize,
+        bookingType,
+        carSelectionID
+      )
       var forRes = data.orderStartDate.toLocaleDateString("en-GB")
       var forRes2 = data.orderStartTime.toLocaleTimeString("en-US", {
         hour: "numeric",
