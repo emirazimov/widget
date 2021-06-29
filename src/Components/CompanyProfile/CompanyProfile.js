@@ -85,7 +85,7 @@ const CompanyProfile = ({
       >
         <Grid item>
           <img
-            // src={profile.companyLogoPath}
+            src={profile.companyLogoPath}
             className={classes.companyLogo}
             alt="companyLogo"
           />

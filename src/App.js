@@ -11,7 +11,7 @@ import { ThemeProvider } from "@material-ui/styles"
 import React, { useEffect } from "react"
 import Draggable from "react-draggable"
 import { connect } from "react-redux"
-import { BookinglaneIcon } from "./assets/icons"
+import { BookinglaneIcon, BookinglaneIconForMobile } from "./assets/icons"
 import CheckOut from "./Components/CheckoutForm/CheckOut/CheckOut"
 import CompanyProfile from "./Components/CompanyProfile/CompanyProfile"
 import {
@@ -136,6 +136,7 @@ const App = (props) => {
     if (jwtToken) {
       return
     }
+
     props.getCompanyToken()
   }, [jwtToken])
 
@@ -152,6 +153,14 @@ const App = (props) => {
           <CssBaseline />
           <ThemeProvider theme={theme}>
             <div className={classes.mainMobile}>
+              {/* <Draggable
+                onDrag={handleDrag}
+                onStop={enableAccordionButton}
+                position={position.current}
+                // disabled={false}
+                // bounds="body"
+                handle="#panel1a-header"
+              > */}
               <Accordion
                 elevation={0}
                 disabled={disabled}
@@ -167,27 +176,32 @@ const App = (props) => {
               >
                 <AccordionSummary
                   className={classes.accordion}
-                  expandIcon={<BookinglaneIcon />}
+                  expandIcon={<BookinglaneIconForMobile />}
                   aria-controls="panel1a-content"
                   id="panel1a-header"
+                  ref={refOfBookNow}
                 ></AccordionSummary>
                 <AccordionDetails>
                   {jwtToken && (
-                    <Card
-                      className={classes.contentMobile}
-                      style={{ bottom: userScreenHeight - yOrdinate }}
-                      style={
-                        activeStep === 1
-                          ? { overflowY: "hidden" }
-                          : { overflowY: "auto" }
-                      }
-                    >
-                      <CompanyProfile
-                        setExpanded={handleClose}
-                        initializing={props.initializing}
-                        expanded={expanded}
-                        setActiveStep={setActiveStep}
+                    <div className="mainContent">
+                      <Card
+                        className={classes.contentMobile}
+                        style={{ bottom: userScreenHeight - yOrdinate }}
+                        style={
+                          activeStep === 1
+                            ? { overflowY: "hidden" }
+                            : { overflowY: "auto" }
+                        }
+                        ref={refOfCard}
+                        // style={{ borderRadius: "10px" }}
                       >
+                        <CompanyProfile
+                          setExpanded={handleClose}
+                          initializing={props.initializing}
+                          expanded={expanded}
+                          setActiveStep={setActiveStep}
+                        />
+
                         {props.initializing ? (
                           <CheckOut
                             isFetching={props.isFetching}
@@ -198,12 +212,13 @@ const App = (props) => {
                             backStep={backStep}
                           />
                         ) : null}
-                      </CompanyProfile>
-                    </Card>
+                      </Card>
+                    </div>
                   )}
                   {!jwtToken && null}
                 </AccordionDetails>
               </Accordion>
+              {/* </Draggable> */}
             </div>
             {/* <div className={classes.main}>
 
@@ -315,7 +330,7 @@ const App = (props) => {
 const mapStateToProps = (state) => {
   return {
     isFetching: state.cars.isFetching,
-    // companyName: state.companyProfile.profile.companyName,
+    companyName: state.companyProfile.profile.companyName,
     initializing: state.companyProfile.initializing,
   }
 }

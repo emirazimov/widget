@@ -72,8 +72,8 @@ export const getCompanyProfile = () => {
       window.localStorage.clear()
     } else {
       dispatch(setCompanyProfile(response.data))
-      console.log(response)
       dispatch(initializing(true))
+      console.log(response.data)
     }
   }
 }
