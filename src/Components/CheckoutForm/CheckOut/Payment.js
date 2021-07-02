@@ -22,6 +22,7 @@ import TextField from "@material-ui/core/TextField"
 import { setPaymentForm } from "./../../../Redux/form-reducer"
 import PrivacyPolicy from "./../../TermsOfUse/PrivacyPolicy"
 import TermsOfUse from "./../../TermsOfUse/TermOfUse"
+import { withStyles } from "@material-ui/styles"
 
 const useStyles = makeStyles((theme) => ({
   contentContainer: {
@@ -80,6 +81,47 @@ const useStyles = makeStyles((theme) => ({
   //   height: "40px",
   // },
 }))
+
+const AntSwitch = withStyles((theme) => ({
+  root: {
+    width: 38,
+    height: 21,
+    padding: 0,
+    display: "flex",
+  },
+  switchBase: {
+    "&:hover": {
+      paddingRight: "4px",
+      paddingBottom: "2px",
+      backgroundColor: "#595959",
+    },
+    padding: 2,
+    color: "#191823",
+    "&$checked": {
+      transform: "translateX(16px)",
+      color: theme.palette.common.main,
+      "& + $track": {
+        opacity: 1,
+        backgroundColor: "white",
+        borderColor: "white",
+      },
+    },
+  },
+  thumb: {
+    width: 14,
+    height: 14,
+    boxShadow: "none",
+    marginTop: "1.5px",
+    marginLeft: "2px",
+  },
+  track: {
+    border: `1px solid '#2B2A32'`,
+    borderRadius: 19,
+    opacity: 1,
+    backgroundColor: "#2B2A32",
+  },
+  checked: {},
+}))(Switch)
 
 const SignupSchema = yup.object().shape({
   // greetClientInfo: yup.object().shape({
@@ -182,7 +224,7 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Switch
+                  <AntSwitch
                     checked={riderDetails}
                     onClick={() => setRiderDetails(!riderDetails)}
                     color="primary"

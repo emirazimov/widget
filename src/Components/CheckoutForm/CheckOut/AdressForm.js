@@ -46,6 +46,9 @@ import { createMuiTheme } from "@material-ui/core"
 import { ThemeProvider } from "@material-ui/styles"
 import Blue from "@material-ui/core/colors/blue"
 import lime from "@material-ui/core/colors/lime"
+import { Popover, TimePicker } from "antd"
+import "antd/dist/antd.css"
+import "./index.css"
 
 const useStyles = makeStyles((theme) => ({
   contentContainer: {
@@ -64,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     "&:hover": {
       background: "#2c2c33",
+      transition: "500ms",
     },
   },
   carFont: {
@@ -147,6 +151,9 @@ const useStyles = makeStyles((theme) => ({
   inputDateTime: {
     height: "40px",
     fontSize: "14px",
+    "&:hover": {
+      transition: "500ms",
+    },
   },
   carTypeWithRed: {
     border: "1px solid #db5858",
@@ -163,6 +170,16 @@ const useStyles = makeStyles((theme) => ({
   },
   carTypeDefault: {
     border: "none",
+  },
+  inputTimehover: {
+    "&:hover": {
+      border: "1px solid white",
+    },
+  },
+  inputTimehover2: {
+    "&:hover": {
+      border: "1px solid white",
+    },
   },
 }))
 
@@ -235,8 +252,8 @@ const AdressFormwithoutReactMemo = ({
   const [airlineId, setAirlineId] = useState(0)
   const [airlines, setAirlines] = useState([])
 
-  const [selectedDate, handleDateChange] = useState(new Date())
-  const [selectedTime, handleTimeChange] = useState(new Date())
+  const [selectedDate, handleDateChange] = useState(null)
+  const [selectedTime, handleTimeChange] = useState(null)
 
   const [redBorderOnSubmit, setRedBorderOnSubmit] = useState(false)
   const [redBorderOnSubmit2, setRedBorderOnSubmit2] = useState(false)
@@ -268,6 +285,10 @@ const AdressFormwithoutReactMemo = ({
     setCarSelectionID(id)
   }
 
+  const handleDateChangeFunc = (time) => {
+    handleDateChange(time)
+  }
+
   const { errors, register, handleSubmit, setValue, ...methods } = useForm({
     // mode: "onBlur",
     // resolver: yupResolver(schema),
@@ -275,7 +296,7 @@ const AdressFormwithoutReactMemo = ({
 
   const onSubmit = (data) => {
     // console.log(data.orderStartDate, data.orderStartTime)
-
+    console.log(data)
     if (
       destinations[0].rideCheckPoint &&
       destinations[1].rideCheckPoint &&
@@ -292,25 +313,24 @@ const AdressFormwithoutReactMemo = ({
         bookingType: bookingType,
         typeId: carSelectionID,
       })
-      console.log(
-        isGateMeeting,
-        airlineId,
-        destinations,
-        pageSize,
-        bookingType,
-        carSelectionID
-      )
+      // console.log(
+      //   isGateMeeting,
+      //   airlineId,
+      //   destinations,
+      //   pageSize,
+      //   bookingType,
+      //   carSelectionID
+      // )
       var forRes = data.orderStartDate.toLocaleDateString("en-GB")
-      var forRes2 = data.orderStartTime.toLocaleTimeString("en-US", {
+      var forRes2 = data.orderStartTime._d.toLocaleTimeString("en-US", {
         hour: "numeric",
         minute: "numeric",
       })
-      console.log(data)
+
       const resData = {
         orderStartDate: `${forRes}`,
         orderStartTime: `${forRes2}`,
       }
-
       setFormData(resData)
 
       next()
@@ -593,8 +613,50 @@ const AdressFormwithoutReactMemo = ({
 
                       {/* </ThemeProvider> */}
                     </Grid>
-                    <Grid item style={{ width: "47%" }}>
+                    <Grid
+                      item
+                      style={{ width: "47%", position: "relative" }}
+                      InputProps={{
+                        classes: {
+                          root: classes.inputTimehover,
+                          input: classes.inputTimehover2, // class name, e.g. `classes-nesting-root-x`
+                        },
+                      }}
+                    >
+                      <div
+                        style={{
+                          position: "absolute",
+                          marginTop: "10px",
+                          marginLeft: "10px",
+                          marginRight: "10px",
+                          zIndex: "11",
+                        }}
+                      >
+                        <ClockIcon />
+                      </div>
                       <TimeInputControl
+                        name="orderStartTime"
+                        use12Hours
+                        placeholder="Pick up Time"
+                        format="h:mm a"
+                        allowClear={false}
+                        style={{
+                          zIndex: "10",
+                          paddingLeft: "36px",
+                          // backgroundColor: "#191929",
+                          // width: "190px",
+                          // height: "41px",
+                          // borderRadius: "9px",
+                          // border: "#191929",
+                          // "&:hover": {
+                          //   border: "1px solid white",
+                          // },
+                        }}
+                      ></TimeInputControl>
+
+                      {/* <TimeInputControl
+                        // value={selectedDate}
+                        // onChange={handleDateChangeFunc}
                         name="orderStartTime"
                         inputVariant="outlined"
                         style={{
@@ -621,17 +683,17 @@ const AdressFormwithoutReactMemo = ({
                             </InputAdornment>
                           ),
                         }}
-                      />
+                      /> */}
                     </Grid>
                   </Grid>
                 </MuiPickersUtilsProvider>
               </Grid>
-              <Grid item style={{ width: "100%", marginTop: "-10px" }}>
+              <Grid item style={{ width: "100%" }}>
                 <PassengerQuantity
                   passengersqState={formData.passengersQuantity}
                 />
               </Grid>
-              <Grid item style={{ width: "100%", marginTop: "-10px" }}>
+              <Grid item style={{ width: "100%" }}>
                 <Grid
                   container
                   direction="row"

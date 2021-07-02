@@ -115,6 +115,34 @@ const App = (props) => {
     // console.log(position.current.y)
     // console.log(userScreenHeight)
   }
+
+  const enableAccordionButtonMobile = (e) => {
+    setTimeout(() => {
+      setDisabled(false)
+    }, 80)
+    setHeightOfCard(refOfCard.current.clientHeight)
+    {
+      /*Тот же обратчик только для иконки Book Now! с пульсацией до раскрытой иконке*/
+    }
+    yOrdinate = position.current.y
+    xOrdinate = position.current.x
+    if (xOrdinate < 0) {
+      position.current.x = -30
+    }
+    if (xOrdinate + 200 > userScreenWidth) {
+      position.current.x = userScreenWidth - 200
+    }
+    if (yOrdinate - 180 < -userScreenHeight) {
+      position.current.y = -userScreenHeight + 210
+    }
+
+    if (yOrdinate > 0) {
+      position.current.y = 45
+    }
+    // console.log(position.current.y)
+    // console.log(userScreenHeight)
+  }
+
   React.useEffect(() => {
     setHeightOfBookNow(refOfBookNow.current.clientHeight)
   }, [heightOfBookNow])
@@ -124,7 +152,7 @@ const App = (props) => {
     if (!expanded)
       setTimeout(() => {
         setDisabled(true)
-      }, 120)
+      }, 80)
   }
 
   const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1)
@@ -155,7 +183,7 @@ const App = (props) => {
             <div className={classes.mainMobile}>
               <Draggable
                 onDrag={handleDrag}
-                onStop={enableAccordionButton}
+                onStop={enableAccordionButtonMobile}
                 position={position.current}
                 // disabled={false}
                 // bounds="body"
@@ -183,7 +211,7 @@ const App = (props) => {
                   ></AccordionSummary>
                   <AccordionDetails>
                     {jwtToken && (
-                      <div className="mainContent">
+                      <div className="mainContentMobile">
                         <Card
                           className={classes.contentMobile}
                           style={{ bottom: userScreenHeight - yOrdinate }}
@@ -192,8 +220,10 @@ const App = (props) => {
                               ? { overflowY: "hidden" }
                               : { overflowY: "auto" }
                           }
+                          style={{
+                            width: userScreenWidth - 17,
+                          }} /* ширину уже раскрывшегося карда пишу сдезь потому-что через makestyles не сетает*/
                           ref={refOfCard}
-                          // style={{ borderRadius: "10px" }}
                         >
                           <CompanyProfile
                             setExpanded={handleClose}
@@ -249,6 +279,7 @@ const App = (props) => {
                 onDrag={handleDrag}
                 onStop={enableAccordionButton}
                 position={position.current}
+                defaultPosition={{ x: 350, y: -10 }}
                 // disabled={false}
                 // bounds="body"
                 handle=".companyProfileClassForDrag, #panel1a-header"

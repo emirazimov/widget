@@ -4,14 +4,17 @@ import Autocomplete from "@material-ui/lab/Autocomplete"
 import {
   DatePicker,
   DateTimePicker,
-  TimePicker,
-  KeyboardTimePicker,
+  // TimePicker,
+  // KeyboardTimePicker,
 } from "@material-ui/pickers"
 import "date-fns"
 import React from "react"
 import { Controller, useFormContext } from "react-hook-form"
 import InputMask from "react-input-mask"
 import { PlacesAutocomplete } from "react-places-autocomplete"
+import { TimePicker } from "antd"
+import "antd/dist/antd.css"
+import "./index.css"
 
 const useStyles = makeStyles((theme) => ({
   inputRoot: {
@@ -145,7 +148,7 @@ export const TimeInputControl = ({ name, required, ...props }) => {
 
   return (
     <Controller
-      as={KeyboardTimePicker}
+      as={TimePicker}
       name={name}
       required={required}
       style={{ cursor: "pointer" }}

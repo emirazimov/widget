@@ -30,7 +30,6 @@ const PassengerQuantity = ({ passengersqState }) => {
   React.useEffect(() => {
     setValue(parseInt(passengersqState))
   }, [passengersqState])
-
   return (
     <Grid container direction="row" justify="space-between" alignItems="center">
       <Grid item>
